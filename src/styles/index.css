@@ -1,0 +1,549 @@
+/* Estilos base */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  --primary-color: #0505A9; /* Azul para los botones */
+  --secondary-color: #DCE0DE;
+  --accent-color: #1a3c7e;
+  --text-color: #333;
+  --error-color: #c62828;
+  --glow-color: #4d8cff;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f5f5f7;
+}
+
+#root {
+  width: 100%;
+}
+
+/* Página de login */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f7 0%, #e0e0e5 100%);
+  padding: 20px;
+}
+
+/* Contenedor de login */
+.login-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background-color: #F0F0EC; 
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Título */
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color); /* Cambiado a azul para contrastar con el fondo blanco */
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--primary-color); /* Cambiado a azul */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(5, 5, 169, 0.2);
+}
+
+/* Mensaje de error */
+.error-message {
+  background-color: rgba(198, 40, 40, 0.1);
+  color: var(--error-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  border-left: 4px solid var(--error-color);
+}
+
+/* Contenedor del botón */
+.button-container {
+  margin-top: 30px;
+  position: relative;
+  text-align: center;
+}
+
+/* Efecto de borde zigzag */
+/* Efecto de borde con línea única continua */
+.border-line {
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  z-index: 1;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease;
+}
+
+/* Animación para la línea cuando se hace hover */
+.login-container:hover .border-line {
+  animation: animateBorderLine 2s linear infinite;
+}
+
+/* Keyframes para la animación de la línea continua */
+@keyframes animateBorderLine {
+  /* Línea superior: izquierda a derecha */
+  0% {
+    width: 0;
+    height: 2px;
+    top: 0;
+    left: 0;
+  }
+  20% {
+    width: 100%;
+    height: 2px;
+    top: 0;
+    left: 0;
+  }
+  
+  /* Línea derecha: arriba a abajo */
+  20.1% {
+    width: 2px;
+    height: 0;
+    top: 0;
+    left: calc(100% - 2px);
+  }
+  40% {
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left: calc(100% - 2px);
+  }
+  
+  /* Línea inferior: derecha a izquierda */
+  40.1% {
+    width: 0;
+    height: 2px;
+    top: calc(100% - 2px);
+    left: 100%;
+  }
+  60% {
+    width: 100%;
+    height: 2px;
+    top: calc(100% - 2px);
+    left: 0;
+  }
+  
+  /* Línea izquierda: abajo a arriba */
+  60.1% {
+    width: 2px;
+    height: 0;
+    top: 100%;
+    left: 0;
+  }
+  80% {
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  /* Volver al inicio para repetir */
+  80.1% {
+    width: 0;
+    height: 2px;
+    top: 0;
+    left: 0;
+  }
+  100% {
+    width: 0;
+    height: 2px;
+    top: 0;
+    left: 0;
+  }
+}
+
+
+.border-top, .border-bottom {
+  width: 100%;
+  height: 2px;
+  left: 0;
+}
+
+.border-right, .border-left {
+  width: 2px;
+  height: 100%;
+  top: 0;
+}
+
+.border-top {
+  top: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.border-right {
+  right: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.border-bottom {
+  bottom: 0;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.border-left {
+  left: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.login-container:hover .border-top,
+.login-container:hover .border-right,
+.login-container:hover .border-bottom,
+.login-container:hover .border-left {
+  transform: scale(1);
+}
+
+.login-container .border-top {
+  animation: animateBorderTop 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.login-container .border-right {
+  animation: animateBorderRight 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.login-container .border-bottom {
+  animation: animateBorderBottom 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.login-container .border-left {
+  animation: animateBorderLeft 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.login-container:hover .border-top,
+.login-container:hover .border-right,
+.login-container:hover .border-bottom,
+.login-container:hover .border-left {
+  animation-play-state: running;
+  animation-delay: calc(0.5s * var(--i));
+}
+
+@keyframes animateBorderTop {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@keyframes animateBorderRight {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+@keyframes animateBorderBottom {
+  0% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+}
+
+@keyframes animateBorderLeft {
+  0% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+/* Estilos para el botón con efecto blob - SOLUCIÓN FINAL */
+.blob-btn {
+  z-index: 1;
+  position: relative;
+  padding: 20px 46px;
+  margin-bottom: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: bold;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  transition: color 0.3s;
+  cursor: pointer;
+  border-radius: 30px;
+  width: 100%;
+  overflow: hidden; /* Añadido para contener los blobs */
+}
+
+.blob-btn:before {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 99%;
+  height: 95%;
+  border: 2px solid var(--primary-color);
+  border-radius: 30px;
+  pointer-events: none; /* Asegura que no interfiera con los eventos del botón */
+}
+
+.blob-btn:after {
+  content: "";
+  z-index: -2;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s;
+  border-radius: 30px;
+}
+
+.blob-btn:hover {
+  color: white;
+}
+
+.blob-btn__inner {
+  z-index: -1;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  background: white;
+}
+
+.blob-btn__blobs {
+  position: relative;
+  display: block;
+  height: 100%;
+  filter: url('#goo');
+}
+
+.blob-btn__blob {
+  position: absolute;
+  top: -15px; /* Ajustado para mejor cobertura vertical */
+  width: 40%; /* Aumentado para mejor cobertura horizontal */
+  height: 150%; /* Aumentado para asegurar cobertura completa */
+  background: var(--primary-color);
+  border-radius: 100%;
+  transform: translate3d(0, 150%, 0) scale(1.1); /* Ajustado el escalado inicial */
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.blob-btn__blob:nth-child(1) {
+  left: -15%;
+  transition-delay: 0s;
+}
+
+.blob-btn__blob:nth-child(2) {
+  left: 20%;
+  transition-delay: 0.08s;
+}
+
+.blob-btn__blob:nth-child(3) {
+  left: 50%;
+  transition-delay: 0.16s;
+}
+
+.blob-btn__blob:nth-child(4) {
+  left: 80%;
+  transition-delay: 0.24s;
+}
+
+.blob-btn:hover .blob-btn__blob {
+  transform: translateZ(0) scale(1.4); /* Ajustado para un escalado óptimo */
+}
+
+.blob-btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+.blob-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.blob-btn:disabled:hover {
+  color: var(--primary-color);
+}
+
+.blob-btn:disabled .blob-btn__blob {
+  background-color: var(--secondary-color);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+  
+  .login-container h1 {
+    font-size: 24px;
+  }
+  
+  .form-group input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .blob-btn {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+  
+  /* Ajuste del borde para tablet */
+  .blob-btn:before {
+    width: 99%;
+    height: 90%;
+  }
+  
+  /* Ajustes para los blobs en tablet */
+  .blob-btn__blob {
+    top: -10px;
+    width: 45%;
+    height: 135%;
+  }
+  
+  .blob-btn__blob:nth-child(1) {
+    left: -20%;
+  }
+  
+  .blob-btn__blob:nth-child(2) {
+    left: 15%;
+  }
+  
+  .blob-btn__blob:nth-child(3) {
+    left: 45%;
+  }
+  
+  .blob-btn__blob:nth-child(4) {
+    left: 75%;
+  }
+  
+  .blob-btn:hover .blob-btn__blob {
+    transform: translateZ(0) scale(1.3);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 25px 15px;
+  }
+  
+  .login-container h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+  }
+  
+  .form-group input {
+    padding: 8px 10px;
+  }
+  
+  .blob-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+  
+  /* Ajuste del borde para móvil */
+  .blob-btn:before {
+    width: 98%;
+    height: 90%;
+  }
+  
+  /* Ajustes para los blobs en móvil */
+  .blob-btn__blob {
+    top: -8px;
+    width: 50%;
+    height: 130%;
+  }
+  
+  .blob-btn__blob:nth-child(1) {
+    left: -25%;
+  }
+  
+  .blob-btn__blob:nth-child(2) {
+    left: 10%;
+  }
+  
+  .blob-btn__blob:nth-child(3) {
+    left: 40%;
+  }
+  
+  .blob-btn__blob:nth-child(4) {
+    left: 70%;
+  }
+  
+  .blob-btn:hover .blob-btn__blob {
+    transform: translateZ(0) scale(1.2);
+  }
+}
