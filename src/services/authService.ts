@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export interface LoginCredentials {
-  username: string;
+  username: string;  // Mantener username en lugar de email
   password: string;
 }
 
@@ -14,29 +14,31 @@ export interface User {
   id: number;
   nombre: string;
   email: string;
-  rol: 'admin' | 'superadmin';
   concesionaria_id: number;
 }
 
 const authService = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
+    const formData = new URLSearchParams();
+    formData.append('username', credentials.username);
+    formData.append('password', credentials.password);
+
     const response = await fetch(`${API_URL}/token`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: new URLSearchParams({
-        username: credentials.username,
-        password: credentials.password
-      }),
+      body: formData.toString()
     });
 
     if (!response.ok) {
-      throw new Error('Error de autenticación');
+      if (response.status === 422) {
+        throw new Error('Credenciales inválidas o formato incorrecto');
+      }
+      throw new Error(`Error de autenticación: ${response.status}`);
     }
 
     const data = await response.json();
-    // Guardar el token en localStorage
     localStorage.setItem('token', data.access_token);
     return data;
   },
@@ -59,21 +61,21 @@ const authService = {
     if (!token) return null;
 
     try {
-      const response = await fetch(`${API_URL}/users/me`, {
+      const response = await fetch(`${API_URL}/api/usuarios/me`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+          'Authorization': `Bearer ${token}`
+        }
       });
-
+      
       if (!response.ok) {
+        // Si hay un error 401, el token no es válido o ha expirado
         if (response.status === 401) {
-          // Token expirado o inválido
-          localStorage.removeItem('token');
+          localStorage.removeItem('token'); // Eliminar el token inválido
           return null;
         }
-        throw new Error('Error al obtener datos del usuario');
+        throw new Error('Error al obtener el usuario');
       }
-
+      
       return await response.json();
     } catch (error) {
       console.error('Error al obtener el usuario:', error);

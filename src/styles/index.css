@@ -547,3 +547,23 @@ body {
     transform: translateZ(0) scale(1.2);
   }
 }
+
+/* Estilos para el contenedor principal de la aplicación */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Contenedor principal para ajustar el espacio del header */
+.content-container {
+  padding-top: 80px; /* Ajusta según la altura de tu header */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor sin padding para la página de login */
+.login-page-container {
+  padding-top: 0 !important;
+}

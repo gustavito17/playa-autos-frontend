@@ -1,16 +1,22 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Navigate, useLocation } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
-const PrivateRoute = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+interface PrivateRouteProps {
+  children: ReactNode;
+}
 
-  // Mostrar un indicador de carga mientras se verifica la autenticación
-  if (isLoading) {
-    return <div>Cargando...</div>;
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const location = useLocation();
+  const token = localStorage.getItem('token');
+
+  // Si no hay token, redirigir a /login
+  if (!token) {
+    // Guardamos la ubicación original para poder redirigir de vuelta después del login
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Redirigir al login si no está autenticado
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  // Si hay token, permitir acceso al contenido protegido
+  return <>{children}</>;
 };
 
 export default PrivateRoute;

@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Añadir esta importación
 
+// Al inicio del componente Login, añade esto:
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth(); // Usar el hook useAuth
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,27 +17,11 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          username: email, // El backend espera 'username' aunque sea un email
-          password: password
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Credenciales inválidas');
-      }
-
-      const data = await response.json();
-      // Guardar el token en localStorage
-      localStorage.setItem('token', data.access_token);
+      // Usar la función login del contexto en lugar de hacer la llamada directamente
+      await login(email, password);
       
       // Redirigir a la ruta de administración
-      navigate('/admin');
+      navigate('/admin/dashboard'); // Cambiar a una ruta específica
     } catch (err) {
       setError('Credenciales inválidas. Por favor, intenta de nuevo.');
       console.error('Error de login:', err);
@@ -42,6 +29,20 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  // Eliminar el padding-top del contenedor principal cuando estamos en login
+  useEffect(() => {
+    const contentContainer = document.querySelector('.content-container');
+    if (contentContainer) {
+      contentContainer.classList.add('login-page-container');
+    }
+    
+    return () => {
+      if (contentContainer) {
+        contentContainer.classList.remove('login-page-container');
+      }
+    };
+  }, []);
 
   return (
     <div className="login-page">

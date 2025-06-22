@@ -26,23 +26,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Verificar autenticación al cargar la aplicación
-    const checkAuth = async () => {
-      try {
-        if (authService.isAuthenticated()) {
-          const userData = await authService.getCurrentUser();
-          setUser(userData);
+    // En el useEffect de AuthProvider
+    useEffect(() => {
+      // Verificar autenticación al cargar la aplicación
+      const checkAuth = async () => {
+        try {
+          console.log('Verificando autenticación...');
+          if (authService.isAuthenticated()) {
+            console.log('Token encontrado, obteniendo datos del usuario...');
+            const userData = await authService.getCurrentUser();
+            console.log('Datos del usuario obtenidos:', userData);
+            setUser(userData);
+          }
+        } catch (error) {
+          console.error('Error al verificar autenticación:', error);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error('Error al verificar autenticación:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+      };
+    
+      checkAuth();
+    }, []);
 
   const login = async (username: string, password: string) => {
     setIsLoading(true);

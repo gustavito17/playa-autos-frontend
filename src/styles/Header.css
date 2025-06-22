@@ -1,0 +1,278 @@
+/* Estilos para el Header */
+.header {
+  position: relative; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(240, 240, 236, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.header-scrolled {
+  background-color: rgba(240, 240, 236, 0.98);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  max-width: 1200px;
+  margin: 8px auto;
+  position: relative;
+}
+
+.logo a {
+  color: var(--primary-color);
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.logo a:hover {
+  color: var(--accent-color);
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  gap: 30px;
+}
+
+.nav-menu a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-menu a:hover {
+  color: var(--primary-color);
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: width 0.3s;
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+/* Botón de cerrar sesión */
+.logout-btn {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Botón de menú hamburguesa */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Línea de borde animada */
+.header-border-line {
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  bottom: 0;
+  left: 0;
+  transition: transform 0.5s ease;
+}
+
+.header:hover .header-border-line {
+  animation: animateHeaderBorder 2s linear infinite;
+}
+
+@keyframes animateHeaderBorder {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  50% {
+    width: 100%;
+    left: 0;
+  }
+  100% {
+    width: 0;
+    left: 100%;
+  }
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 15px 20px;
+  }
+  
+  .menu-toggle {
+    display: flex;
+    z-index: 1001; /* Aumentar z-index para que esté por encima del menú */
+  }
+  
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: #F0F0EC;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 80px 20px 30px;
+    transition: all 0.4s ease;
+    overflow-y: auto;
+    visibility: hidden; /* Oculto por defecto */
+    opacity: 0; /* Añadir opacidad para una mejor transición */
+    z-index: 1000; /* Asegurar que esté por debajo del botón toggle */
+  }
+  
+  .nav-menu.active {
+    right: 0;
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Asegurar que el menú se oculte completamente cuando no está activo */
+  .nav-menu:not(.active) {
+    right: -100%;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none; /* Evitar interacciones cuando está oculto */
+  }
+  
+  .nav-menu ul {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* Centrar elementos horizontalmente */
+    width: 100%; /* Asegurar que el ul ocupe todo el ancho */
+  }
+  
+  .nav-menu li {
+    width: 100%; /* Hacer que cada elemento de lista ocupe todo el ancho */
+    text-align: center; /* Centrar el texto */
+  }
+  
+  .nav-menu a {
+    display: block;
+    padding: 10px 0;
+    font-size: 18px; /* Aumentar tamaño para mejor toque en móvil */
+  }
+  
+  .logout-btn {
+    margin-top: 20px;
+    width: 80%; /* Reducir el ancho para mejor apariencia */
+    max-width: 250px; /* Establecer un ancho máximo */
+    padding: 12px 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 30px; /* Bordes más redondeados */
+    font-weight: 500; /* Texto un poco más grueso */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo a {
+    font-size: 20px;
+  }
+  
+  .nav-menu {
+    width: 100%;
+    padding-top: 70px;
+    text-align: center;
+  }
+  
+  .nav-menu li {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  /* Ajustar el botón de logout para pantallas muy pequeñas */
+  .logout-btn {
+    width: 70%; /* Ancho más pequeño en pantallas muy pequeñas */
+    max-width: 200px;
+    padding: 10px 14px;
+    font-size: 16px;
+    border-radius: 25px;
+  }
+  
+  .menu-toggle span {
+    height: 3px;
+  }
+  
+  /* Ajustar la animación del botón hamburguesa */
+  .menu-toggle.active span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+  
+  .menu-toggle.active span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+  }
+  
+  /* Mejorar el espaciado de los elementos del menú */
+  .nav-menu ul {
+    gap: 15px;
+  }
+  
+  /* Hacer los elementos del menú más fáciles de tocar */
+  .nav-menu a {
+    padding: 12px 0;
+  }
+}

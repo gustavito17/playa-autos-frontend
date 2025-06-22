@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import { fileURLToPath, URL } from 'node:url'
+// Eliminar esta línea si no se usa
 import path from 'path'
 
 // https://vite.dev/config/
@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.VITE_API_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),  // Corregido con la barra invertida
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, ''),
         },
       },
     },
