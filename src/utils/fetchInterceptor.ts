@@ -4,9 +4,9 @@ const originalFetch = window.fetch.bind(window);
 const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Response> => {
   const token = localStorage.getItem('token');
   
-  // Eliminar la barra final si existe
-  const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url;
-
+  // Usar la URL original sin modificar
+  const cleanUrl = url;
+  
   // Verificar si es FormData o URLSearchParams
   const isFormData = options.body instanceof FormData;
   const isURLSearchParams = options.body instanceof URLSearchParams;
@@ -18,15 +18,18 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
-  headers.set('Accept', 'application/json');
+  headers.set('Accept', '*/*'); // Añadir esta línea para aceptar cualquier tipo de respuesta
   
+  // Solo agregar Content-Type cuando no es FormData ni URLSearchParams
   if (!isFormData && !isURLSearchParams && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
   const defaultOptions: RequestInit = {
     ...options,
-    headers
+    headers,
+    mode: 'cors',      // Asegurarnos de que estamos usando modo CORS
+    credentials: 'omit' // Esto coincide con allow_credentials=False del backend
   };
 
   try {

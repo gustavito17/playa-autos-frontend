@@ -34,7 +34,7 @@ function App() {
                   <PrivateRoute>
                     <Dashboard />
                   </PrivateRoute>
-                } /> 
+                } />
                 <Route path="/admin/vehiculos" element={
                   <PrivateRoute>
                     <AdminVehiculos />
