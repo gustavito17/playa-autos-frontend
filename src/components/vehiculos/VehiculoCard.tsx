@@ -7,6 +7,7 @@ interface VehiculoCardProps {
   onEliminar: (id: number) => void;
   onSetFormData: (formData: any) => void;
   onSetModalOpen: (open: boolean) => void;
+  marcaNombre: string;
 }
 
 const VehiculoCard: React.FC<VehiculoCardProps> = ({
@@ -14,12 +15,13 @@ const VehiculoCard: React.FC<VehiculoCardProps> = ({
   onEditar,
   onEliminar,
   onSetFormData,
-  onSetModalOpen
+  onSetModalOpen,
+  marcaNombre
 }) => {
   return (
     <tr key={vehiculo.id}>
       <td>{vehiculo.modelo}</td>
-      <td>{vehiculo.marca?.nombre || 'Sin marca'}</td>
+      <td>{marcaNombre}</td>
       <td>{vehiculo.anio}</td>
       <td>{vehiculo.estado}</td>
       <td>${vehiculo.precio.toLocaleString()}</td>

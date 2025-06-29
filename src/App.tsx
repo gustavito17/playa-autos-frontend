@@ -12,6 +12,8 @@ import Login from './pages/Login';
 // Páginas privadas (admin)
 import Dashboard from './pages/admin/DashboardAdmin';
 import AdminVehiculos from './pages/admin/AdminVehiculos';
+import AdminMarcas from './pages/admin/AdminMarcas';
+
 
 // Crear una instancia del cliente de consulta
 const queryClient = new QueryClient();
@@ -35,6 +37,11 @@ function AppContent() {
           <Route path="/admin/vehiculos" element={
             <PrivateRoute>
               <AdminVehiculos />
+            </PrivateRoute>
+          } />
+          <Route path="/admin/marcas" element={
+            <PrivateRoute>
+              <AdminMarcas />
             </PrivateRoute>
           } />
           {/* Ruta para manejar páginas no encontradas */}

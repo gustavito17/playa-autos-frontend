@@ -62,7 +62,8 @@ const AdminVehiculos: React.FC = () => {
 
   const cargarMarcas = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/marcas`, {
+      // Traer todas las marcas (ajusta el parámetro si tu backend usa otro)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/marcas?limit=1000`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -402,7 +403,7 @@ const AdminVehiculos: React.FC = () => {
         <div className="admin-header">
           <h1>Administración de Vehículos</h1>
           <button className="btn-crear" onClick={() => setModalOpen(true)}>
-            Crear Nuevo Vehículo
+            <span style={{ fontWeight: 700, fontSize: 18, marginRight: 6 }}>+</span>Nuevo Vehículo
           </button>
         </div>
 
@@ -434,6 +435,7 @@ const AdminVehiculos: React.FC = () => {
               setFormData={setFormData}
               setModalOpen={setModalOpen}
               eliminarVehiculo={eliminarVehiculo}
+              marcas={marcas}
             />
           </div>
           <VehiculosCardsMobile

@@ -1,0 +1,469 @@
+/* Responsive paginación igual que AdminVehiculos */
+@media (max-width: 768px) {
+  .paginacion-container {
+    gap: 3px;
+    margin: 18px 0 10px 0;
+  }
+  .btn-paginacion {
+    padding: 7px 10px;
+    font-size: 15px;
+    min-width: 36px;
+    border-radius: 5px;
+  }
+  .btn-paginacion-anterior,
+  .btn-paginacion-siguiente {
+    min-width: 70px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .paginacion-container {
+    flex-wrap: wrap;
+    gap: 2px;
+    margin: 12px 0 6px 0;
+  }
+  .btn-paginacion {
+    padding: 6px 7px;
+    font-size: 13px;
+    min-width: 28px;
+    border-radius: 4px;
+  }
+  .btn-paginacion-anterior,
+  .btn-paginacion-siguiente {
+    min-width: 55px;
+    font-size: 13px;
+  }
+}
+
+/* Paginación igual que AdminVehiculos */
+.paginacion-container {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 24px 0 12px 0;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+
+.btn-paginacion {
+  background: #fff;
+  border: 1.5px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+  outline: none;
+}
+
+.btn-paginacion:hover:not(:disabled),
+.btn-paginacion.activa {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.btn-paginacion:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-paginacion-numero {
+  font-weight: 500;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+
+.btn-paginacion-numero.activa {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(5, 5, 169, 0.10);
+}
+
+.btn-paginacion-anterior,
+.btn-paginacion-siguiente {
+  font-weight: 600;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+/* Estilos para AdminMarcas */
+.admin-marcas-container {
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+  background: #F0F0EC;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 10px 2vw 20px 2vw;
+  width: 95%;
+  position: relative;
+}
+
+.admin-marcas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.admin-marcas-header h1 {
+  color: var(--primary-color);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-azul {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.btn-azul:hover {
+  background: #003366;
+  color: #fff;
+}
+
+.tabla-marcas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background-color: #F0F0EC;
+  margin-bottom: 20px;
+  width: 100%;
+  min-height: 60px;
+}
+
+.tabla-marcas table {
+  width: 100%;
+  max-width: 700px;
+  border-collapse: collapse;
+  min-width: 320px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.tabla-marcas th, .tabla-marcas td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+}
+
+.tabla-marcas th {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tabla-marcas tr:hover {
+  background: #f5f5f5;
+}
+
+.btn-editar, .btn-eliminar {
+  padding: 7px 16px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  margin-right: 8px;
+  transition: background 0.18s, color 0.18s;
+}
+
+
+.btn-editar {
+  background: #fff;
+  color: #4CAF50;
+  border: 1.5px solid #4CAF50;
+}
+
+.btn-editar:hover {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.btn-eliminar {
+  background: #fff;
+  color: #dc3545;
+  border: 1.5px solid #dc3545;
+}
+
+.btn-eliminar:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+.mensaje {
+  margin-bottom: 18px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  animation: fadeIn 0.3s;
+}
+
+.mensaje.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.mensaje.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.loading {
+  text-align: center;
+  font-size: 17px;
+  color: #666;
+  margin: 30px 0;
+}
+
+/* Modal reutilizado del sistema */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 32px 24px 24px 24px;
+  border-radius: 15px;
+  min-width: 320px;
+  max-width: 95vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.form-group input[type="text"]:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.btn-guardar {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-guardar:hover {
+  background: #003366;
+}
+
+.btn-cancelar {
+  background: #fff;
+  color: #6c757d;
+  border: 1.5px solid #6c757d;
+  border-radius: 25px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #6c757d;
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive: Celular */
+@media (max-width: 600px) {
+  .admin-marcas-container {
+    margin: 10px auto 18px auto;
+    padding: 6px 1vw 10px 1vw;
+    max-width: 98vw;
+    min-width: 0;
+  }
+  .modal-content {
+    padding: 18px 8px 12px 8px;
+    min-width: 0;
+    width: 98vw;
+    box-sizing: border-box;
+  }
+  .tabla-marcas {
+    width: 100vw;
+    min-width: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    overflow-x: auto;
+  }
+  .tabla-marcas table {
+    min-width: 320px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 100vw;
+    margin: 0;
+    display: block;
+    overflow-x: auto;
+    /* Para scroll horizontal si es necesario */
+  }
+  .tabla-marcas thead, .tabla-marcas tbody, .tabla-marcas tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .tabla-marcas th, .tabla-marcas td {
+    word-break: break-word;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+  .admin-marcas-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .admin-marcas-header h1 {
+    font-size: 19px;
+    text-align: center;
+  }
+  .btn-azul {
+    max-width: 260px;
+    margin: 0 auto;
+    display: block;
+  }
+  .tabla-marcas th, .tabla-marcas td {
+    padding: 8px 4px;
+    font-size: 13px;
+  }
+  .btn-azul, .btn-editar, .btn-eliminar, .btn-guardar, .btn-cancelar {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  .modal-buttons {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+}
+
+/* Responsive: Tablet */
+@media (min-width: 601px) and (max-width: 900px) {
+  .admin-marcas-container {
+    max-width: 95vw;
+    padding: 18px 3vw;
+  }
+  .modal-content {
+    padding: 24px 12px 18px 12px;
+    min-width: 0;
+    width: 80vw;
+    box-sizing: border-box;
+  }
+  .tabla-marcas table {
+    min-width: 380px;
+    font-size: 14px;
+  }
+  .tabla-marcas th, .tabla-marcas td {
+    padding: 10px 6px;
+    font-size: 14px;
+  }
+  .btn-azul, .btn-editar, .btn-eliminar, .btn-guardar, .btn-cancelar {
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+  .modal-buttons {
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+}
+
+/* Responsive: PC (ajustes para pantallas grandes) */
+@media (min-width: 901px) {
+  .admin-marcas-container {
+    max-width: 700px;
+    padding: 32px 24px 24px 24px;
+  }
+  .modal-content {
+    padding: 32px 24px 24px 24px;
+    min-width: 320px;
+    width: auto;
+  }
+  .tabla-marcas table {
+    min-width: 400px;
+    font-size: 15px;
+  }
+  .tabla-marcas th, .tabla-marcas td {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+  .btn-azul, .btn-editar, .btn-eliminar, .btn-guardar, .btn-cancelar {
+    padding: 10px 22px;
+    font-size: 15px;
+  }
+  .modal-buttons {
+    flex-direction: row;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+}

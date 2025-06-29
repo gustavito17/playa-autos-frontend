@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Vehiculo } from '../../types/vehiculos';
 import VehiculoCard from './VehiculoCard';
+import type { Marca } from '../../types/vehiculos';
 
 interface VehiculoListProps {
   vehiculosFiltrados: Vehiculo[];
@@ -8,6 +9,7 @@ interface VehiculoListProps {
   setFormData: (formData: any) => void;
   setModalOpen: (open: boolean) => void;
   eliminarVehiculo: (id: number) => void;
+  marcas: Marca[];
 }
 
 const VehiculoList: React.FC<VehiculoListProps> = ({
@@ -15,8 +17,15 @@ const VehiculoList: React.FC<VehiculoListProps> = ({
   setVehiculoEditar,
   setFormData,
   setModalOpen,
-  eliminarVehiculo
+  eliminarVehiculo,
+  marcas
 }) => {
+  // Función para obtener el nombre de la marca por id
+  const getMarcaNombre = (vehiculo: Vehiculo) => {
+    if (vehiculo.marca && vehiculo.marca.nombre) return vehiculo.marca.nombre;
+    const marca = marcas.find(m => m.id === vehiculo.marca_id);
+    return marca ? marca.nombre : 'Sin marca';
+  };
   return (
     <div className="tabla-vehiculos">
       <table>
@@ -40,6 +49,7 @@ const VehiculoList: React.FC<VehiculoListProps> = ({
               onEliminar={eliminarVehiculo}
               onSetFormData={setFormData}
               onSetModalOpen={setModalOpen}
+              marcaNombre={getMarcaNombre(vehiculo)}
             />
           ))}
         </tbody>
