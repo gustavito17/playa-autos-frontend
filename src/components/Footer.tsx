@@ -1,20 +1,12 @@
 import { useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { FaEnvelope, FaWhatsapp, FaFacebook, FaInstagram } from 'react-icons/fa';
 import '../styles/Footer.css';
 
 const Footer = () => {
   const location = useLocation();
-  const { logout } = useAuth();
   
   // Determinar si estamos en una ruta de administración
   const isAdminRoute = location.pathname.startsWith('/admin');
-
-  // Manejar el cierre de sesión
-  const handleLogout = () => {
-    logout();
-    // No es necesario navegar aquí, ya que AuthContext redirigirá automáticamente
-  };
 
   return (
     <footer className="footer">

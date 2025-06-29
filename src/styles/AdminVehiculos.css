@@ -1,3 +1,22 @@
+/* Botón azul reutilizable para paginación y acciones */
+.btn-azul {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-color: var(--primary-color) !important;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+
+.btn-azul:hover:not(:disabled),
+.btn-azul.activa {
+  background: #003366 !important; /* Un azul más oscuro para hover */
+  color: #fff !important;
+  border-color: #003366 !important;
+}
+
+.btn-azul:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 /* Mejoras responsivas generales */
 .admin-vehiculos-wrapper {
   display: flex;
@@ -407,6 +426,11 @@ tr:hover {
   .tabla-vehiculos {
     display: none;
   }
+@media (min-width: 769px) {
+  .tabla-vehiculos {
+    display: block !important;
+  }
+}
   
   .vehiculos-cards {
     display: grid;
@@ -1563,4 +1587,65 @@ button:disabled,
 .btn-guardando:hover {
   background-color: inherit !important;
   transform: none !important;
+}
+
+/* Paginación: unifica fuente y color con el diseño general */
+.paginacion-container {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 24px 0 12px 0;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+
+/* Botón de paginación: azul y fuente igual que el resto */
+.btn-paginacion {
+  background: #fff;
+  border: 1.5px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+  outline: none;
+}
+
+
+/* Hover: azul fuerte */
+.btn-paginacion:hover:not(:disabled),
+.btn-paginacion.activa {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+/* Disabled: opaco */
+.btn-paginacion:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Números de página: igual fuente */
+.btn-paginacion-numero {
+  font-weight: 500;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
+}
+
+/* Activa: igual que hover */
+.btn-paginacion-numero.activa {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(5, 5, 169, 0.10);
+}
+
+/* Botones anterior/siguiente: igual fuente */
+.btn-paginacion-anterior,
+.btn-paginacion-siguiente {
+  font-weight: 600;
+  font-family: 'Poppins', system-ui, Helvetica, sans-serif;
 }

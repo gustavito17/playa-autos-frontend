@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import type { Vehiculo, VehiculoCreate, Marca } from '../../types/vehiculos';
 import '../../styles/AdminVehiculos.css';
+import VehiculoForm from '../../components/vehiculos/VehiculoForm';
+import VehiculoList from '../../components/vehiculos/VehiculoList';
+import VehiculosCardsMobile from '../../components/vehiculos/VehiculosCardsMobile';
+import VehiculoModal from '../../components/vehiculos/VehiculoModal';
+import Mensaje from '../../components/common/Mensaje';
 
 const AdminVehiculos: React.FC = () => {
   const { user } = useAuth();
@@ -27,7 +32,9 @@ const AdminVehiculos: React.FC = () => {
   
   // Estados para filtros
   const [busqueda, setBusqueda] = useState('');
-  const [cantidadMostrar, setCantidadMostrar] = useState(10);
+  // Nuevo estado para paginación
+  const [paginaActual, setPaginaActual] = useState(1);
+  const cantidadPorPagina = 10;
 
   const mostrarMensaje = (tipo: 'success' | 'error', texto: string) => {
     setMensaje({ tipo, texto });
@@ -115,9 +122,6 @@ const AdminVehiculos: React.FC = () => {
     
     return await response.json();
   };
-
-  // Alias para cargarVehiculos
-  const fetchVehiculos = cargarVehiculos;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -348,6 +352,8 @@ const AdminVehiculos: React.FC = () => {
     }
   };
 
+  // Eliminar declaración de fetchVehiculos si existe
+
   // Agregar después del useEffect existente
   useEffect(() => {
     cargarMarcas();
@@ -367,9 +373,26 @@ const AdminVehiculos: React.FC = () => {
       );
     }
     
-    // Limitar cantidad
-    return filtrados.slice(0, cantidadMostrar);
-  }, [vehiculos, busqueda, cantidadMostrar]);
+    return filtrados;
+  }, [vehiculos, busqueda]);
+
+  // Calcular paginación
+  const totalPaginas = Math.ceil(vehiculosFiltrados.length / cantidadPorPagina);
+  const vehiculosPaginados = React.useMemo(() => {
+    const inicio = (paginaActual - 1) * cantidadPorPagina;
+    return vehiculosFiltrados.slice(inicio, inicio + cantidadPorPagina);
+  }, [vehiculosFiltrados, paginaActual]);
+
+  // Cambiar de página
+  const irAPagina = (pagina: number) => {
+    if (pagina < 1 || pagina > totalPaginas) return;
+    setPaginaActual(pagina);
+  };
+
+  // Resetear página al cambiar filtro de búsqueda
+  React.useEffect(() => {
+    setPaginaActual(1);
+  }, [busqueda]);
 
   if (loading) return <div className="loading">Cargando...</div>;
 
@@ -384,9 +407,7 @@ const AdminVehiculos: React.FC = () => {
         </div>
 
         {mensaje && (
-          <div className={`mensaje ${mensaje.tipo}`}>
-            {mensaje.texto}
-          </div>
+          <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />
         )}
 
         {/* Barra de filtros */}
@@ -401,427 +422,86 @@ const AdminVehiculos: React.FC = () => {
               className="input-busqueda"
             />
           </div>
-          <div className="filtro-cantidad">
-            <label>Mostrar </label>
-            <select 
-              value={cantidadMostrar} 
-              onChange={(e) => setCantidadMostrar(Number(e.target.value))}
-              className="select-cantidad"
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={vehiculos.length}>Todos</option>
-            </select>
-          </div>
-          <div className="filtro-resultados">
-            <span>Mostrando {vehiculosFiltrados.length} de {vehiculos.length} vehículos</span>
-          </div>
-          <button 
-            onClick={() => {
-              setBusqueda('');
-              setCantidadMostrar(10);
-            }}
-            className="btn-limpiar"
-          >
-            Limpiar
-          </button>
         </div>
 
-        <div className="tabla-vehiculos">
-          <table>
-            <thead>
-              <tr>
-                <th>Modelo</th>
-                <th>Marca</th>
-                <th>Año</th>
-                <th>Estado</th>
-                <th>Precio</th>
-                <th>Imágenes</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehiculosFiltrados.map((vehiculo) => (
-                <tr key={vehiculo.id}>
-                  <td>{vehiculo.modelo}</td>
-                  <td>{vehiculo.marca?.nombre || 'Sin marca'}</td>
-                  <td>{vehiculo.anio}</td>
-                  <td>{vehiculo.estado}</td>
-                  <td>${vehiculo.precio.toLocaleString()}</td>
-                  <td>
-                    <div className="imagenes-preview">
-                      {vehiculo.imagenes.map((imagen) => (
-                        <img key={imagen.id} src={imagen.url} alt={vehiculo.modelo} />
-                      ))}
-                    </div>
-                  </td>
-                  <td>
-                    <button
-                      className="btn-editar"
-                      onClick={() => {
-                        setVehiculoEditar(vehiculo);
-                        setFormData({
-                          modelo: vehiculo.modelo,
-                          anio: vehiculo.anio,
-                          color: vehiculo.color,
-                          estado: vehiculo.estado,
-                          precio: vehiculo.precio,
-                          descripcion: vehiculo.descripcion,
-                          marca_id: vehiculo.marca_id,
-                        });
-                        setModalOpen(true);
-                      }}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="btn-eliminar"
-                      onClick={() => eliminarVehiculo(vehiculo.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+        {/* Vista tabla en escritorio, tarjetas en móvil */}
+        <div>
+          <div className="tabla-vehiculos">
+            <VehiculoList
+              vehiculosFiltrados={vehiculosPaginados}
+              setVehiculoEditar={setVehiculoEditar}
+              setFormData={setFormData}
+              setModalOpen={setModalOpen}
+              eliminarVehiculo={eliminarVehiculo}
+            />
+          </div>
+          <VehiculosCardsMobile
+            vehiculos={vehiculosPaginados}
+            onEditar={setVehiculoEditar}
+            onEliminar={eliminarVehiculo}
+            onSetFormData={setFormData}
+            onSetModalOpen={setModalOpen}
+          />
         </div>
 
-        {modalOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>{vehiculoEditar ? 'Editar' : 'Crear'} Vehículo</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label>Modelo:</label>
-                  <input
-                    type="text"
-                    value={formData.modelo}
-                    onChange={(e) => setFormData({...formData, modelo: e.target.value})}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Marca:</label>
-                  <select
-                    value={formData.marca_id}
-                    onChange={(e) => setFormData({...formData, marca_id: Number(e.target.value)})}
-                    required
-                  >
-                    <option value="">Seleccione una marca</option>
-                    {marcas.map((marca) => (
-                      <option key={marca.id} value={marca.id}>
-                        {marca.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label>Año:</label>
-                  <input
-                    type="number"
-                    value={formData.anio}
-                    onChange={(e) => setFormData({...formData, anio: Number(e.target.value)})}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Color:</label>
-                  <input
-                    type="text"
-                    value={formData.color}
-                    onChange={(e) => setFormData({...formData, color: e.target.value})}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Imágenes:</label>
-                  
-                  {/* Mostrar imágenes existentes si estamos editando */}
-                  {vehiculoEditar && vehiculoEditar.imagenes && vehiculoEditar.imagenes.length > 0 && (
-                    <div className="imagenes-existentes">
-                      <h4>Imágenes actuales: ({vehiculoEditar.imagenes.length}/10)</h4>
-                      <div className="imagenes-grid">
-                        {vehiculoEditar.imagenes.map((imagen) => (
-                          <div key={imagen.id} className="imagen-item">
-                            <img src={imagen.url} alt={vehiculoEditar.modelo} />
-                            <button
-                              type="button"
-                              className="btn-eliminar-imagen"
-                              onClick={() => eliminarImagen(imagen.id)}
-                              title="Eliminar imagen"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Contador e indicador de estado */}
-                  {(() => {
-                    const currentImageCount = vehiculoEditar?.imagenes?.length || 0;
-                    const pendingCount = pendingImageFiles?.length || 0;
-                    const tempCount = tempImageFiles?.length || 0;
-                    const totalImages = currentImageCount + pendingCount + tempCount;
-                    const isAtLimit = totalImages >= 10;
-                    
-                    return (
-                      <div className={`imagen-status-container ${
-                        totalImages >= 8 ? 'warning' : totalImages >= 10 ? 'error' : 'normal'
-                      }`}>
-                        <div className="imagen-counter">
-                          <span className="counter-text">
-                            Total de imágenes: {totalImages}/10
-                          </span>
-                          {isAtLimit && (
-                            <span className="limit-message">
-                              Límite alcanzado - Elimina una imagen para agregar más
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })()}
-                  
-                  {/* Input para agregar nuevas imágenes */}
-                  <label>Agregar nuevas imágenes:</label>
-                  
-                  {(() => {
-                    const currentImageCount = vehiculoEditar?.imagenes?.length || 0;
-                    const pendingCount = pendingImageFiles?.length || 0;
-                    const tempCount = tempImageFiles?.length || 0;
-                    const totalImages = currentImageCount + pendingCount + tempCount;
-                    const isAtLimit = totalImages >= 10;
-                    
-                    return (
-                      <>
-                        <input
-                          type="file"
-                          multiple
-                          accept="image/*"
-                          disabled={isAtLimit}
-                          className={isAtLimit ? 'input-disabled' : ''}
-                          onChange={(e) => {
-                            if (e.target.files && e.target.files.length > 0) {
-                              const newImageCount = e.target.files.length;
-                              const totalAfterAdd = totalImages + newImageCount;
-                              
-                              if (totalAfterAdd > 10) {
-                                const availableSlots = 10 - totalImages;
-                                mostrarMensaje('error', 
-                                  `Solo puedes agregar ${availableSlots} imagen(es) más. ` +
-                                  `Tienes ${totalImages}/10 imágenes. Intentas agregar ${newImageCount}.`
-                                );
-                                e.target.value = '';
-                                return;
-                              }
-                              
-                              // Mostrar mensaje de éxito
-                              mostrarMensaje('success', 
-                                `${newImageCount} imagen(es) agregada(s). Total: ${totalAfterAdd}/10`
-                              );
-                              
-                              if (vehiculoEditar) {
-                                // Para edición: combinar con archivos pendientes existentes
-                                const newFilesArray = Array.from(e.target.files);
-                                const existingPendingArray = pendingImageFiles ? Array.from(pendingImageFiles) : [];
-                                const combinedFiles = [...existingPendingArray, ...newFilesArray];
-                                
-                                // Crear nuevo FileList
-                                const dt = new DataTransfer();
-                                combinedFiles.forEach(file => dt.items.add(file));
-                                setPendingImageFiles(dt.files);
-                                
-                                // Limpiar el input
-                                e.target.value = '';
-                              } else {
-                                // Para vehículo nuevo: usar el estado existente
-                                const newFilesArray = Array.from(e.target.files);
-                                const existingTempArray = tempImageFiles ? Array.from(tempImageFiles) : [];
-                                const combinedFiles = [...existingTempArray, ...newFilesArray];
-                                
-                                const dt = new DataTransfer();
-                                combinedFiles.forEach(file => dt.items.add(file));
-                                setTempImageFiles(dt.files);
-                                
-                                e.target.value = '';
-                              }
-                            }
-                          }}
-                        />
-                        {isAtLimit && (
-                          <div className="input-disabled-message">
-                            <span>Selección de archivos deshabilitada (límite alcanzado)</span>
-                          </div>
-                        )}
-                      </>
-                    );
-                  })()}
-
-                  {/* Vista previa para vehículos en edición - NUEVAS IMÁGENES PENDIENTES */}
-                  {vehiculoEditar && pendingImageFiles && pendingImageFiles.length > 0 && (
-                    <div className="imagenes-pendientes">
-                      <div className="imagenes-header">
-                        <h4>Nuevas imágenes a agregar: ({pendingImageFiles.length})</h4>
-                        <button
-                          type="button"
-                          className="btn-limpiar-imagenes"
-                          onClick={() => {
-                            setPendingImageFiles(null);
-                            // Limpiar URLs de objeto
-                            Array.from(pendingImageFiles).forEach(file => {
-                              URL.revokeObjectURL(URL.createObjectURL(file));
-                            });
-                          }}
-                          title="Cancelar nuevas imágenes"
-                        >
-                          ✕ Cancelar nuevas
-                        </button>
-                      </div>
-                      <div className="imagenes-grid">
-                        {Array.from(pendingImageFiles).map((file, index) => {
-                          const imageUrl = URL.createObjectURL(file);
-                          return (
-                            <div key={`pending-${index}`} className="imagen-item pending">
-                              <img 
-                                src={imageUrl} 
-                                alt={`Nueva imagen ${index + 1}`}
-                                onLoad={() => {
-                                  // Limpiar la URL después de cargar
-                                  setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
-                                }}
-                              />
-                              <button
-                                type="button"
-                                className="btn-eliminar-imagen"
-                                onClick={() => {
-                                  const filesArray = Array.from(pendingImageFiles);
-                                  filesArray.splice(index, 1);
-                                  
-                                  if (filesArray.length === 0) {
-                                    setPendingImageFiles(null);
-                                  } else {
-                                    const dt = new DataTransfer();
-                                    filesArray.forEach(file => dt.items.add(file));
-                                    setPendingImageFiles(dt.files);
-                                  }
-                                  
-                                  // Limpiar la URL del objeto eliminado
-                                  URL.revokeObjectURL(imageUrl);
-                                }}
-                                title="Eliminar esta imagen"
-                              >
-                                ✕
-                              </button>
-                              <div className="imagen-info">
-                                <span className="imagen-nombre">{file.name}</span>
-                                <span className="imagen-size">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
-                                <span className="imagen-status">Pendiente</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="imagenes-warning">
-                        <small>⚠️ Estas imágenes se subirán cuando presiones "Actualizar"</small>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Vista previa de imágenes temporales para vehículos nuevos */}
-                  {!vehiculoEditar && tempImageFiles && tempImageFiles.length > 0 && (
-                    <div className="imagenes-temporales">
-                      <div className="imagenes-header">
-                        <h4>Imágenes seleccionadas: ({tempImageFiles.length}/10)</h4>
-                        <button
-                          type="button"
-                          className="btn-limpiar-imagenes"
-                          onClick={() => setTempImageFiles(null)}
-                          title="Limpiar imágenes seleccionadas"
-                        >
-                          ✕ Limpiar
-                        </button>
-                      </div>
-                      <div className="imagenes-grid">
-                        {Array.from(tempImageFiles).map((file, index) => (
-                          <div key={index} className="imagen-item">
-                            <img 
-                              src={URL.createObjectURL(file)} 
-                              alt={`Preview ${index + 1}`} 
-                            />
-                            <div className="imagen-info">
-                              <span className="imagen-nombre">{file.name}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="imagen-info-text">
-                    <small>Máximo 10 imágenes. Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB por imagen.</small>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label>Descripción:</label>
-                  <textarea
-                    value={formData.descripcion}
-                    onChange={(e) => setFormData({...formData, descripcion: e.target.value})}
-                    required
-                  />
-                </div>
-
-                <div className="modal-buttons">
-                  <button 
-                    type="submit" 
-                    className={`btn-crear ${guardando ? 'btn-guardando' : ''}`}
-                    disabled={guardando}
-                  >
-                    {guardando ? (
-                      <>
-                        <span className="spinner"></span>
-                        {vehiculoEditar ? 'Actualizando...' : 'Creando...'}
-                      </>
-                    ) : (
-                      vehiculoEditar ? 'Actualizar' : 'Crear'
-                    )}
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn-cancelar"
-                    onClick={() => {
-                      setModalOpen(false);
-                      setVehiculoEditar(null);
-                      setPendingImageFiles(null);
-                      setTempImageFiles(null);
-                      setFormData({
-                        modelo: '',
-                        anio: new Date().getFullYear(),
-                        color: '',
-                        estado: 'usado',
-                        precio: 0,
-                        descripcion: '',
-                        marca_id: 0,
-                      });
-                    }}
-                    disabled={guardando}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            </div>
+        {/* Paginación debajo de la tabla */}
+        {totalPaginas > 1 && (
+          <div className="paginacion-container">
+            <button
+              className="btn-paginacion"
+              onClick={() => irAPagina(paginaActual - 1)}
+              disabled={paginaActual === 1}
+            >Anterior</button>
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+              <button
+                key={num}
+                className={`btn-paginacion${paginaActual === num ? ' activa' : ''}`}
+                onClick={() => irAPagina(num)}
+              >{num}</button>
+            ))}
+            <button
+              className="btn-paginacion"
+              onClick={() => irAPagina(paginaActual + 1)}
+              disabled={paginaActual === totalPaginas}
+            >Siguiente</button>
           </div>
         )}
+
+        {modalOpen && (
+          <VehiculoModal isOpen={modalOpen}>
+            <VehiculoForm
+              vehiculoEditar={vehiculoEditar}
+              formData={formData}
+              setFormData={setFormData}
+              guardando={guardando}
+              marcas={marcas}
+              pendingImageFiles={pendingImageFiles}
+              setPendingImageFiles={setPendingImageFiles}
+              tempImageFiles={tempImageFiles}
+              setTempImageFiles={setTempImageFiles}
+              mostrarMensaje={mostrarMensaje}
+              onSubmit={handleSubmit}
+              onClose={() => {
+                setModalOpen(false);
+                setVehiculoEditar(null);
+                setPendingImageFiles(null);
+                setTempImageFiles(null);
+                setFormData({
+                  modelo: '',
+                  anio: new Date().getFullYear(),
+                  color: '',
+                  estado: 'usado',
+                  precio: 0,
+                  descripcion: '',
+                  marca_id: 0,
+                });
+              }}
+              eliminarImagen={eliminarImagen}
+            />
+          </VehiculoModal>
+        )
+        }
       </div>
     </div>
   );
