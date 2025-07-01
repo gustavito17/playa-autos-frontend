@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useConcesionaria } from '../context/ConcesionariaContext';
 import '../styles/Header.css'; // Corregida la ruta de importación
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { logo_url, loading } = useConcesionaria();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLElement>(null);
@@ -73,15 +75,17 @@ const Header = () => {
     return null;
   }
 
+  if (loading) return null;
   return (
     <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <div className="header-container">
         <div className="logo">
           <Link to={isAdminRoute ? '/admin' : '/'}>
-            Playa Autos
+            {logo_url ? (
+              <img src={logo_url} alt="Logo concesionaria" style={{ maxHeight: 48, maxWidth: 120, objectFit: 'contain' }} />
+            ) : null}
           </Link>
         </div>
-
         {/* Botón hamburguesa para móvil */}
         <button 
           ref={menuToggleRef}
@@ -93,7 +97,6 @@ const Header = () => {
           <span></span>
           <span></span>
         </button>
-
         {/* Navegación */}
         <nav ref={menuRef} className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul>
@@ -135,7 +138,6 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-      
       {/* Línea de borde animada similar a la del login */}
       <div className="header-border-line"></div>
     </header>

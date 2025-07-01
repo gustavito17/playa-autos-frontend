@@ -48,7 +48,7 @@ const DashboardAdmin = () => {
             <div className="card-content">
               <h2>Concesionaria</h2>
               <p>Actualiza la información de tu concesionaria, incluyendo logo y datos de contacto.</p>
-              <Link to="/admin/concesionarias" className="card-button">
+              <Link to="/admin/concesionaria" className="card-button">
                 Gestionar Concesionaria
               </Link>
             </div>

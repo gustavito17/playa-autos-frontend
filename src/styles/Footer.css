@@ -207,6 +207,13 @@
   
   .footer-container {
     gap: 20px;
+    flex-wrap: wrap;
+    word-break: break-word;
+  }
+  
+  .footer-nav ul, .footer-legal {
+    flex-wrap: wrap;
+    text-align: center;
   }
   
   .footer-nav ul {

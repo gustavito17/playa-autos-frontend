@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/AdminMarcas.css';
 import Mensaje from '../../components/common/Mensaje';
+import MarcasCardsMobile from '../../components/marcas/MarcasCardsMobile';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const getToken = () => localStorage.getItem('token');
@@ -180,114 +181,121 @@ const AdminMarcas: React.FC = () => {
   }, [marcas.length]);
 
   return (
-    <div className="admin-marcas-container">
-      <div className="admin-marcas-header">
-        <h1>Gestión de Marcas</h1>
-        <button className="btn-crear" onClick={handleCreate}>
-          <span style={{ fontWeight: 700, fontSize: 18, marginRight: 6 }}>+</span> Nueva Marca
-        </button>
-      </div>
-      {mensaje && <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />}
-      {loading ? (
-        <div className="loading">Cargando marcas...</div>
-      ) : (
-        <>
-        <div className="tabla-marcas">
-          <table>
-            <thead>
-              <tr>
-                {/* <th>ID</th> */}
-                <th>Nombre</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {marcas.length === 0 ? (
+    <div className="admin-vehiculos-wrapper">
+      <div className="admin-marcas-container">
+        <div className="admin-marcas-header">
+          <h1>Gestión de Marcas</h1>
+          <button className="btn-crear" onClick={handleCreate}>
+            <span style={{ fontWeight: 700, fontSize: 18, marginRight: 6 }}>+</span> Nueva Marca
+          </button>
+        </div>
+        {mensaje && <Mensaje tipo={mensaje.tipo} texto={mensaje.texto} />}
+        {loading ? (
+          <div className="loading">Cargando marcas...</div>
+        ) : (
+          <>
+          <div className="tabla-marcas">
+            <table>
+              <thead>
                 <tr>
-                  <td colSpan={2} style={{ textAlign: 'center' }}>
-                    No hay marcas registradas.
-                  </td>
+                  {/* <th>ID</th> */}
+                  <th>Nombre</th>
+                  <th>Acciones</th>
                 </tr>
-              ) : (
-                marcasPaginadas.map((marca) => (
-                  <tr key={marca.id}>
-                    {/* <td>{marca.id}</td> */}
-                    <td>{marca.nombre}</td>
-                    <td>
-                      <button
-                        className="btn-editar"
-                        onClick={() => handleEdit(marca)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="btn-eliminar"
-                        onClick={() => handleDelete(marca.id)}
-                        disabled={deletingId === marca.id}
-                      >
-                        {deletingId === marca.id ? 'Eliminando...' : 'Eliminar'}
-                      </button>
+              </thead>
+              <tbody>
+                {marcas.length === 0 ? (
+                  <tr>
+                    <td colSpan={2} style={{ textAlign: 'center' }}>
+                      No hay marcas registradas.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-        {/* Paginación */}
-        {totalPaginas > 1 && (
-          <div className="paginacion-container">
-            <button
-              className="btn-paginacion btn-paginacion-anterior"
-              onClick={() => irAPagina(paginaActual - 1)}
-              disabled={paginaActual === 1}
-            >Anterior</button>
-            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+                ) : (
+                  marcasPaginadas.map((marca) => (
+                    <tr key={marca.id}>
+                      {/* <td>{marca.id}</td> */}
+                      <td>{marca.nombre}</td>
+                      <td>
+                        <button
+                          className="btn-editar"
+                          onClick={() => handleEdit(marca)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="btn-eliminar"
+                          onClick={() => handleDelete(marca.id)}
+                          disabled={deletingId === marca.id}
+                        >
+                          {deletingId === marca.id ? 'Eliminando...' : 'Eliminar'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <MarcasCardsMobile
+            marcas={marcasPaginadas}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          {/* Paginación */}
+          {totalPaginas > 1 && (
+            <div className="paginacion-container">
               <button
-                key={num}
-                className={`btn-paginacion btn-paginacion-numero${paginaActual === num ? ' activa' : ''}`}
-                onClick={() => irAPagina(num)}
-              >{num}</button>
-            ))}
-            <button
-              className="btn-paginacion btn-paginacion-siguiente"
-              onClick={() => irAPagina(paginaActual + 1)}
-              disabled={paginaActual === totalPaginas}
-            >Siguiente</button>
+                className="btn-paginacion btn-paginacion-anterior"
+                onClick={() => irAPagina(paginaActual - 1)}
+                disabled={paginaActual === 1}
+              >Anterior</button>
+              {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+                <button
+                  key={num}
+                  className={`btn-paginacion btn-paginacion-numero${paginaActual === num ? ' activa' : ''}`}
+                  onClick={() => irAPagina(num)}
+                >{num}</button>
+              ))}
+              <button
+                className="btn-paginacion btn-paginacion-siguiente"
+                onClick={() => irAPagina(paginaActual + 1)}
+                disabled={paginaActual === totalPaginas}
+              >Siguiente</button>
+            </div>
+          )}
+          </>
+        )}
+        {showForm && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>{editId ? 'Editar Marca' : 'Nueva Marca'}</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="nombre">Nombre</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    value={form.nombre}
+                    onChange={handleInput}
+                    autoFocus
+                    maxLength={40}
+                    required
+                  />
+                </div>
+                <div className="modal-buttons">
+                  <button type="submit" className={`btn-crear`}>
+                    {editId ? 'Actualizar' : 'Crear'}
+                  </button>
+                  <button type="button" className="btn-cancelar" onClick={closeForm}>
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
-        </>
-      )}
-      {showForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>{editId ? 'Editar Marca' : 'Nueva Marca'}</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="nombre">Nombre</label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  value={form.nombre}
-                  onChange={handleInput}
-                  autoFocus
-                  maxLength={40}
-                  required
-                />
-              </div>
-              <div className="modal-buttons">
-                <button type="submit" className={`btn-crear`}>
-                  {editId ? 'Actualizar' : 'Crear'}
-                </button>
-                <button type="button" className="btn-cancelar" onClick={closeForm}>
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };

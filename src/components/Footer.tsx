@@ -27,7 +27,7 @@ const Footer = () => {
                   <Link to="/admin/marcas">Marcas</Link>
                 </li>
                 <li>
-                  <Link to="/admin/concesionarias">Concesionaria</Link>
+                  <Link to="/admin/concesionaria">Concesionaria</Link>
                 </li>
               </>
             ) : (

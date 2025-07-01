@@ -26,6 +26,16 @@ export default defineConfig(({ mode }) => {
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
+        '/usuarios': {
+          target: env.VITE_API_URL,
+          changeOrigin: true,
+          secure: false,
+        },
+        '/concesionarias': {
+          target: env.VITE_API_URL,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
   }

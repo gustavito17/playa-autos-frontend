@@ -6,6 +6,8 @@ interface AuthContextType {
   isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  concesionariaLogo: string | null;
+  setConcesionariaLogo: (logo: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,37 +27,65 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [concesionariaLogo, setConcesionariaLogo] = useState<string | null>(null);
 
     // En el useEffect de AuthProvider
     useEffect(() => {
       // Verificar autenticación al cargar la aplicación
       const checkAuth = async () => {
         try {
-          console.log('Verificando autenticación...');
           if (authService.isAuthenticated()) {
-            console.log('Token encontrado, obteniendo datos del usuario...');
             const userData = await authService.getCurrentUser();
-            console.log('Datos del usuario obtenidos:', userData);
             setUser(userData);
+            // Obtener logo de la concesionaria si hay userData
+            if (userData && userData.concesionaria_id) {
+              const token = authService.getToken();
+              const res = await fetch(`/api/concesionarias/${userData.concesionaria_id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              if (res.ok) {
+                const conc = await res.json();
+                setConcesionariaLogo(conc.logo_url || null);
+              } else {
+                setConcesionariaLogo(null);
+              }
+            } else {
+              setConcesionariaLogo(null);
+            }
+          } else {
+            setConcesionariaLogo(null);
           }
         } catch (error) {
-          console.error('Error al verificar autenticación:', error);
+          setConcesionariaLogo(null);
         } finally {
           setIsLoading(false);
         }
       };
-    
       checkAuth();
     }, []);
 
   const login = async (username: string, password: string) => {
     setIsLoading(true);
     try {
-      // Crear un objeto que cumpla con la interfaz LoginCredentials
       const credentials: LoginCredentials = { username, password };
       await authService.login(credentials);
       const userData = await authService.getCurrentUser();
       setUser(userData);
+      // Obtener logo de la concesionaria al hacer login
+      if (userData && userData.concesionaria_id) {
+        const token = authService.getToken();
+        const res = await fetch(`/api/concesionarias/${userData.concesionaria_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const conc = await res.json();
+          setConcesionariaLogo(conc.logo_url || null);
+        } else {
+          setConcesionariaLogo(null);
+        }
+      } else {
+        setConcesionariaLogo(null);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +102,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     isLoading,
     login,
     logout,
+    concesionariaLogo,
+    setConcesionariaLogo,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,0 +1,100 @@
+.admin-concesionarias {
+  position: relative;
+  max-width: 1200px;
+  margin: 50px auto 50px auto;
+  padding: 20px;
+  background-color: #F0F0EC;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 95%;
+}
+
+.admin-concesionarias h1, .admin-concesionarias h2 {
+  color: var(--primary-color);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 600;
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+.admin-concesionarias-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.admin-concesionarias-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.admin-concesionarias-form .form-input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.admin-concesionarias-form .form-input[type="color"] {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.admin-concesionarias-logo {
+  max-width: 120px;
+  max-height: 80px;
+  display: block;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.admin-concesionarias .btn {
+  background: white;
+  color: var(--primary-color);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.admin-concesionarias .btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-concesionarias .btn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.admin-concesionarias .btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-concesionarias .error {
+  color: red;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-concesionarias {
+    padding: 10px 2vw 20px 2vw;
+    margin: 30px auto 30px auto;
+  }
+  .admin-concesionarias h1, .admin-concesionarias h2 {
+    font-size: clamp(20px, 5vw, 26px);
+    margin-bottom: 20px;
+  }
+} 

@@ -1,14 +1,14 @@
 /* Botón azul reutilizable para paginación y acciones */
 .btn-azul {
-  background-color: var(--primary-color) !important;
-  color: #fff !important;
+  background: var(--primary-color) !important;
+  color: #fff;
   border-color: var(--primary-color) !important;
   font-family: 'Poppins', system-ui, Helvetica, sans-serif;
 }
 
 .btn-azul:hover:not(:disabled),
 .btn-azul.activa {
-  background: #003366 !important; /* Un azul más oscuro para hover */
+  background: #003366 !important; /* O usar una función de darken si tienes preprocesador, si no, dejar este azul para hover */
   color: #fff !important;
   border-color: #003366 !important;
 }
