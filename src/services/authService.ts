@@ -1,3 +1,4 @@
+import { fetchWithAuth } from '../utils/fetchInterceptor';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export interface LoginCredentials {
@@ -23,7 +24,7 @@ const authService = {
     formData.append('username', credentials.username);
     formData.append('password', credentials.password);
 
-    const response = await fetch(`${API_URL}/token`, {
+    const response = await fetchWithAuth(`${API_URL}/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -61,7 +62,7 @@ const authService = {
     if (!token) return null;
 
     try {
-      const response = await fetch(`${API_URL}/api/usuarios/me`, {
+      const response = await fetchWithAuth(`${API_URL}/api/usuarios/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

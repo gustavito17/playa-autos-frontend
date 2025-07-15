@@ -23,7 +23,7 @@ const VehiculosCardsMobile: React.FC<VehiculosCardsMobileProps> = ({
         <div className="vehiculo-card" key={vehiculo.id}>
           <div className="vehiculo-card-header">
             <span className="vehiculo-card-title">{vehiculo.modelo}</span>
-            <span className="vehiculo-card-precio">${vehiculo.precio.toLocaleString()}</span>
+            <span className="vehiculo-card-precio">Gs. {vehiculo.precio.toLocaleString()}</span>
           </div>
           <div className="vehiculo-card-info">
             <div><b>Marca:</b> {vehiculo.marca?.nombre || 'Sin marca'}</div>

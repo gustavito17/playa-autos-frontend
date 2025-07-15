@@ -39,7 +39,14 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
     if (!response.ok) {
       if (response.status === 401) {
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        // Solo redirigir si la URL es privada
+        if (
+          cleanUrl.includes('/admin') ||
+          cleanUrl.includes('/api/usuarios/me') ||
+          cleanUrl.includes('/concesionarias/') && cleanUrl.includes('/logo') // ejemplo de endpoint privado
+        ) {
+          window.location.href = '/login';
+        }
         return response;
       }
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -52,7 +59,8 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
   }
 };
 
-// Reemplazar el fetch global
-window.fetch = fetchWithAuth as typeof window.fetch;
+// No reemplazar el fetch global
+// window.fetch = fetchWithAuth as typeof window.fetch;
+
 export { fetchWithAuth };
 export default {};

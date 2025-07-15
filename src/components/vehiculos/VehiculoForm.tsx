@@ -65,12 +65,16 @@ const VehiculoForm: React.FC<VehiculoFormProps> = ({
 
           <div className="form-group">
             <label>Año:</label>
-            <input
-              type="number"
+            <select
               value={formData.anio}
               onChange={(e) => setFormData({...formData, anio: Number(e.target.value)})}
               required
-            />
+            >
+              <option value="">Seleccione un año</option>
+              {Array.from({ length: new Date().getFullYear() - 1979 }, (_, i) => new Date().getFullYear() - i).map((anio) => (
+                <option key={anio} value={anio}>{anio}</option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">
@@ -80,6 +84,23 @@ const VehiculoForm: React.FC<VehiculoFormProps> = ({
               value={formData.color}
               onChange={(e) => setFormData({...formData, color: e.target.value})}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Precio (Gs.)</label>
+            <input
+              type="number"
+              value={formData.precio === 0 ? '' : formData.precio}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({
+                  ...formData,
+                  precio: value === '' ? 0 : Number(value)
+                });
+              }}
+              required
+              min={0}
             />
           </div>
 

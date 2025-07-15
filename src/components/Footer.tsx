@@ -39,6 +39,9 @@ const Footer = () => {
                 <li>
                   <Link to="/catalogo">Catálogo</Link>
                 </li>
+                <li>
+                  <Link to="/contacto">Contacto</Link>
+                </li>
               </>
             )}
           </ul>
@@ -62,8 +65,8 @@ const Footer = () => {
         
         {/* Enlaces legales - Alineados a la derecha */}
         <div className="footer-legal">
-          <Link to="/politicas-de-privacidad">Políticas de privacidad</Link>
-          <Link to="/terminos-y-condiciones">Términos y condiciones</Link>
+          <Link to={isAdminRoute ? '/admin/politicas-de-privacidad' : '/politicas-de-privacidad'}>Políticas de Privacidad</Link>
+          <Link to={isAdminRoute ? '/admin/terminos-y-condiciones' : '/terminos-y-condiciones'}>Términos y Condiciones</Link>
         </div>
       </div>
       

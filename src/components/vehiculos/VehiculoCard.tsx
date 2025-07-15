@@ -24,7 +24,7 @@ const VehiculoCard: React.FC<VehiculoCardProps> = ({
       <td>{marcaNombre}</td>
       <td>{vehiculo.anio}</td>
       <td>{vehiculo.estado}</td>
-      <td>${vehiculo.precio.toLocaleString()}</td>
+      <td>Gs. {vehiculo.precio.toLocaleString()}</td>
       <td>
         <div className="imagenes-preview">
           {vehiculo.imagenes.map((imagen) => (
