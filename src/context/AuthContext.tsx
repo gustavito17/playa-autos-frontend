@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             // Obtener logo de la concesionaria si hay userData
             if (userData && userData.concesionaria_id) {
               const token = authService.getToken();
-              const res = await fetch(`/api/concesionarias/${userData.concesionaria_id}`, {
+              const res = await fetch(`${import.meta.env.VITE_API_URL}/concesionarias/${userData.concesionaria_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
               if (res.ok) {
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       // Obtener logo de la concesionaria al hacer login
       if (userData && userData.concesionaria_id) {
         const token = authService.getToken();
-        const res = await fetch(`/api/concesionarias/${userData.concesionaria_id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/concesionarias/${userData.concesionaria_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {

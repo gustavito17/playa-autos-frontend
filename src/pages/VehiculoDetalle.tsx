@@ -16,7 +16,7 @@ const VehiculoDetalle: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`/vehiculos/${id}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${id}`);
         if (!res.ok) throw new Error('Error al cargar el vehículo');
         const data = await res.json();
         setVehiculo(data);
