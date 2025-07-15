@@ -1,4 +1,3 @@
-import React from 'react';
 import { useConcesionaria } from '../context/ConcesionariaContext';
 
 const TerminosCondiciones = () => {

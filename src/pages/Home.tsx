@@ -5,7 +5,6 @@ import type { Vehiculo } from '../types/vehiculos';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const CONCESIONARIA_ID = 1; // O el valor dinámico si tu app es multi-concesionaria
-const NUMERO_WPP = '595991123456'; // Cambia por el número real de la concesionaria
 
 const Home = () => {
   const { logo_url, color_principal, nombre, loading } = useConcesionaria();

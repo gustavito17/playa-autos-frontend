@@ -7,7 +7,6 @@ const MAX_LOGO_SIZE_MB = 5;
 
 const AdminConcesionarias: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [concesionariaId, setConcesionariaId] = useState<string | null>(null);
   const [nombre, setNombre] = useState("");
   const [color, setColor] = useState("#000000");
@@ -17,6 +16,7 @@ const AdminConcesionarias: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const colorInputRef = useRef<HTMLInputElement>(null);
   const [mensaje, setMensaje] = useState<{ tipo: 'success' | 'error'; texto: string } | null>(null);
+  const [setError] = useState<any>(() => () => {}); // Dummy setError para evitar errores, ya que los mensajes se muestran con mostrarMensaje
 
   const mostrarMensaje = (tipo: 'success' | 'error', texto: string) => {
     setMensaje({ tipo, texto });
