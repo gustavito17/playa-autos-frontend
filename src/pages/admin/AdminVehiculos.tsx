@@ -343,7 +343,10 @@ const AdminVehiculos: React.FC = () => {
     
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       
       if (!response.ok) throw new Error('Error al eliminar vehículo');
