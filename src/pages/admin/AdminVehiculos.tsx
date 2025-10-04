@@ -337,6 +337,20 @@ const AdminVehiculos: React.FC = () => {
     }
   };
 
+  const handleVehiculoClick = (vehiculo: Vehiculo) => {
+    setVehiculoEditar(vehiculo);
+    setFormData({
+      modelo: vehiculo.modelo,
+      anio: vehiculo.anio,
+      color: vehiculo.color,
+      estado: vehiculo.estado,
+      precio: vehiculo.precio,
+      descripcion: vehiculo.descripcion,
+      marca_id: vehiculo.marca_id,
+    });
+    setModalOpen(true);
+  };
+
   const eliminarVehiculo = async (id: number) => {
     if (!window.confirm('¿Está seguro de eliminar este vehículo?')) return;
     
